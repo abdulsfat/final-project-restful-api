@@ -3,34 +3,33 @@ const db = require("../config/database");
 
 // membuat class Employee
 class Employee {
-
   static all() {
     return new Promise((resolve, reject) => {
-        // lakukan query ke db untuk ambil data
-        const sql = "SELECT * FROM employees";
-        db.query(sql, (sql, results) => {
-            resolve(results);
-        });
+      // lakukan query ke db untuk ambil data
+      const sql = "SELECT * FROM employees";
+      db.query(sql, (sql, results) => {
+        resolve(results);
+      });
     });
   }
 
   static create(Employee) {
     return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO employees SET ?";
-        db.query(sql, Employee, (err, results) => {
-          const newEmployeeId = results.insertId;
-          this.all()
-            .then(allEmployees => {
-              const newEmployee = allEmployees.find(employee => employee.id === newEmployeeId);
-              resolve(newEmployee);
-            })
-            .catch(error => {
-              reject(error);
-            });
-        });
+      const sql = "INSERT INTO employees SET ?";
+      db.query(sql, Employee, (err, results) => {
+        const newEmployeeId = results.insertId;
+        this.all()
+          .then((allEmployees) => {
+            const newEmployee = allEmployees.find((employee) => employee.id === newEmployeeId);
+            resolve(newEmployee);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     });
   }
-  
+
   static async update(id, data) {
     // Memperbarui data
     await new Promise((resolve, reject) => {
@@ -53,11 +52,11 @@ class Employee {
   static async delete(id) {
     // query delete
     return new Promise((resolve, reject) => {
-        // query sql
-        const sql = "DELETE FROM employees WHERE id = ?";
-        db.query(sql, id, (err, results) => {
-            resolve(results);
-        });
+      // query sql
+      const sql = "DELETE FROM employees WHERE id = ?";
+      db.query(sql, id, (err, results) => {
+        resolve(results);
+      });
     });
   }
 
@@ -93,8 +92,6 @@ class Employee {
       });
     });
   }
-  
-  
 }
 
 // export class Employee

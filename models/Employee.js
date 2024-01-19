@@ -3,7 +3,7 @@ const db = require("../config/database");
 
 // membuat class Employee
 class Employee {
-  // TODO 1: Tampilkan data employee
+
   static all() {
     return new Promise((resolve, reject) => {
         // lakukan query ke db untuk ambil data
@@ -14,7 +14,6 @@ class Employee {
     });
   }
 
-   // TODO 2: Add data employee
   static create(Employee) {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO employees SET ?";
@@ -68,6 +67,29 @@ class Employee {
       const sql = `SELECT * FROM employees WHERE id = ?`;
       db.query(sql, id, (err, results) => {
         resolve(results[0]);
+      });
+    });
+  }
+
+  static search(name) {
+    // lakukan promise, select by id
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM employees WHERE name = ?`;
+      db.query(sql, name, (err, results) => {
+        resolve(results[0]);
+      });
+    });
+  }
+
+  static findByStatus(status) {
+    return new Promise((resolve, reject) => {
+      const sql = "SELECT * FROM employees WHERE status = ?";
+      db.query(sql, [status], (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
       });
     });
   }

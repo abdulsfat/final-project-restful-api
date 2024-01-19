@@ -1,29 +1,23 @@
-// import EmployeeController
-const EmployeeController = require("../controllers/EmployeeController");
-
-// import express
 const express = require("express");
+const EmployeeController = require("../controllers/EmployeeController");
+const { validateCreateEmployee, validateUpdateEmployee } = require('../validators');
 
-// membuat object router
 const router = express.Router();
 
-/**
- * Membuat routing
- */
+// Route sambutan
 router.get("/", (req, res) => {
   res.send("Hello HRD API Express");
 });
 
-// Membuat routing employee
-router.get("/employees", EmployeeController.index);
-router.post("/employees", EmployeeController.store);
-router.put("/employees/:id", EmployeeController.update);
-router.delete("/employees/:id", EmployeeController.destroy);
-router.get("/employees/:id", EmployeeController.show);
-router.get("/employees/search/:name", EmployeeController.search);
-router.get("/employees/status/active", EmployeeController.active);
-router.get("/employees/status/inactive", EmployeeController.inactive);
-router.get("/employees/status/terminated", EmployeeController.terminated);
+// Routing untuk employee
+router.get("/employees", EmployeeController.index); // Mendapatkan daftar semua pegawai
+router.post("/employees", validateCreateEmployee, EmployeeController.store); // Menambahkan pegawai baru
+router.put("/employees/:id", validateUpdateEmployee, EmployeeController.update); // Mengupdate informasi pegawai
+router.delete("/employees/:id", EmployeeController.destroy); // Menghapus pegawai berdasarkan ID
+router.get("/employees/:id", EmployeeController.show); // Mendapatkan detail pegawai berdasarkan ID
+router.get("/employees/search/:name", EmployeeController.search); // Mencari pegawai berdasarkan nama
+router.get("/employees/status/active", EmployeeController.active); // Mendapatkan daftar pegawai dengan status aktif
+router.get("/employees/status/inactive", EmployeeController.inactive); // Mendapatkan daftar pegawai dengan status tidak aktif
+router.get("/employees/status/terminated", EmployeeController.terminated); // Mendapatkan daftar pegawai dengan status terminated
 
-// export router
 module.exports = router;

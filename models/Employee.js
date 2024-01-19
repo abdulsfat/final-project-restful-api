@@ -1,11 +1,11 @@
-// import database
+// Import database
 const db = require("../config/database");
 
-// membuat class Employee
+// Membuat kelas Employee
 class Employee {
+  // Mendapatkan semua data pegawai dari database
   static all() {
     return new Promise((resolve, reject) => {
-      // lakukan query ke db untuk ambil data
       const sql = "SELECT * FROM employees";
       db.query(sql, (sql, results) => {
         resolve(results);
@@ -13,6 +13,7 @@ class Employee {
     });
   }
 
+  // Menambahkan pegawai baru ke database
   static create(Employee) {
     return new Promise((resolve, reject) => {
       const sql = "INSERT INTO employees SET ?";
@@ -30,29 +31,26 @@ class Employee {
     });
   }
 
+  // Memperbarui data pegawai berdasarkan ID
   static async update(id, data) {
-    // Memperbarui data
     await new Promise((resolve, reject) => {
-      // Query untuk memperbarui data
       const sql = "UPDATE employees SET ? WHERE id = ?";
       db.query(sql, [data, id], (err, results) => {
         if (err) {
-          reject(err); // Menolak promise jika terjadi kesalahan
+          reject(err);
         } else {
           resolve(results);
         }
       });
     });
 
-    // Mengambil data berdasarkan id setelah pembaruan
     const updatedEmployee = await this.find(id);
     return updatedEmployee;
   }
 
+  // Menghapus data pegawai berdasarkan ID
   static async delete(id) {
-    // query delete
     return new Promise((resolve, reject) => {
-      // query sql
       const sql = "DELETE FROM employees WHERE id = ?";
       db.query(sql, id, (err, results) => {
         resolve(results);
@@ -60,8 +58,8 @@ class Employee {
     });
   }
 
+  // Mencari data pegawai berdasarkan ID
   static find(id) {
-    // lakukan promise, select by id
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM employees WHERE id = ?`;
       db.query(sql, id, (err, results) => {
@@ -70,8 +68,8 @@ class Employee {
     });
   }
 
+  // Mencari pegawai berdasarkan nama
   static search(name) {
-    // lakukan promise, select by id
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM employees WHERE name = ?`;
       db.query(sql, name, (err, results) => {
@@ -80,6 +78,7 @@ class Employee {
     });
   }
 
+  // Mendapatkan pegawai berdasarkan status
   static findByStatus(status) {
     return new Promise((resolve, reject) => {
       const sql = "SELECT * FROM employees WHERE status = ?";
@@ -94,5 +93,5 @@ class Employee {
   }
 }
 
-// export class Employee
+// Ekspor kelas Employee
 module.exports = Employee;
